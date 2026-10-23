@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SpendNest — Revenue Intelligence Inbox</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+</head>
+<body>
+
+  <!-- Persistent Sidebar -->
+  <aside class="app-sidebar">
+    <div class="sidebar-header">
+      <div class="brand-badge">
+        <span class="indicator-dot"></span> SpendNest Intelligence
+      </div>
+      <div class="app-title">Revenue Inbox</div>
+      <div class="app-subtitle">Manager Operations Workspace</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item active" data-view="overview" href="#overview">
+        <span class="nav-icon">📊</span>
+        <span>Overview</span>
+      </a>
+      <a class="nav-item" data-view="inbox" href="#inbox">
+        <span class="nav-icon">📥</span>
+        <span>Conversation Inbox</span>
+        <span class="badge" id="nav-inbox-badge">44</span>
+      </a>
+      <a class="nav-item" data-view="brief" href="#brief">
+        <span class="nav-icon">📋</span>
+        <span>Manager Brief</span>
+      </a>
+      <a class="nav-item" data-view="exports" href="#exports">
+        <span class="nav-icon">📁</span>
+        <span>Routing & Exports</span>
+      </a>
+      <a class="nav-item" data-view="replay" href="#replay">
+        <span class="nav-icon">🔄</span>
+        <span>Import & Replay</span>
+      </a>
+      <a class="nav-item" data-view="settings" href="#settings">
+        <span class="nav-icon">⚙️</span>
+        <span>Findings & Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="dataset-status-card">
+        <div class="status-row">
+          <span>Unique Records:</span>
+          <strong id="sidebar-total-records">44</strong>
+        </div>
+        <div class="status-row">
+          <span>Usable Text:</span>
+          <strong id="sidebar-usable-records">18 (40.9%)</strong>
+        </div>
+        <div class="status-row">
+          <span>Last Batch:</span>
+          <strong id="sidebar-last-batch">initial-001</strong>
+        </div>
+      </div>
+      <div style="margin-top: 10px; font-size: 11px; color: var(--text-sidebar); display: flex; justify-content: space-between;">
+        <a href="reading_pack.html" target="_blank" style="color: #38bdf8; text-decoration: none;">📖 Reading Pack</a>
+        <span>Asia/Kolkata</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Application Content Area -->
+  <main class="app-main">
+    
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <h1 class="view-heading" id="top-bar-title">Overview Dashboard</h1>
+        <span class="date-badge">21 August 2026 (Asia/Kolkata)</span>
+      </div>
+      <div class="top-bar-right">
+        <button class="btn btn-secondary btn-sm btn-open-methodology" title="View Metric Methodology & Denominators">
+          ℹ️ Methodology
+        </button>
+        <button class="btn btn-primary btn-sm" id="btn-download-export-zip">
+          ⬇️ Export Pack (.zip)
+        </button>
+      </div>
+    </header>
+
+    <!-- VIEW 1: OVERVIEW DASHBOARD -->
+    <div class="view-container active" id="view-overview">
+      
+      <!-- Headline KPI Cards -->
+      <div class="metrics-grid">
+        <div class="metric-card" id="kpi-total-records" onclick="filterInboxByCondition('usableText', 'all')">
+          <div class="metric-header">
+            <span class="metric-label">Total Unique Source Records</span>
+            <button class="info-tooltip-btn btn-open-methodology">ⓘ</button>
+          </div>
+          <div class="metric-value-row">
+            <span class="metric-value">44</span>
+          </div>
+          <div class="metric-footer">
+            <span class="metric-sub">30 Calls • 14 Meetings</span>
+          </div>
+        </div>
+
+        <div class="metric-card" id="kpi-usable-text" onclick="filterInboxByCondition('usableText', 'usable')">
+          <div class="metric-header">
+            <span class="metric-label">Usable Supplied Text</span>
+            <button class="info-tooltip-btn btn-open-methodology">ⓘ</button>
+          </div>
+          <div class="metric-value-row">
+            <span class="metric-value">18</span>
+            <span class="badge badge-deal-next-steps" style="font-size: 11px;">Coverage</span>
+          </div>
+          <div class="metric-footer">
+            <span class="metric-sub">40.9% coverage (18 of 44)</span>
+          </div>
+        </div>
+
+        <div class="metric-card" id="kpi-missing-text" onclick="filterInboxByCondition('usableText', 'missing')">
+          <div class="metric-header">
+            <span class="metric-label">Missing Usable Text (Intake)</span>
+            <button class="info-tooltip-btn btn-open-methodology">ⓘ</button>
+          </div>
+          <div class="metric-value-row">
+            <span class="metric-value">26</span>
+          </div>
+          <div class="metric-footer">
+            <span class="metric-sub">Intake queue awaiting transcripts</span>
+          </div>
+        </div>
+
+        <div class="metric-card" id="kpi-manual-overrides" onclick="filterInboxByCondition('override', 'override')">
+          <div class="metric-header">
+            <span class="metric-label">Manual Route Corrections</span>
+            <button class="info-tooltip-btn btn-open-methodology">ⓘ</button>
+          </div>
+          <div class="metric-value-row">
+            <span class="metric-value">1</span>
+            <span class="badge badge-override" style="font-size: 11px;">Preserved</span>
+          </div>
+          <div class="metric-footer">
+            <span class="metric-sub">Preserved manager decisions</span>
+          </div>
+        </div>
+
+        <div class="metric-card" id="kpi-stale-warnings" onclick="filterInboxByCondition('reviewState', 'Pending Review - Text Changed')">
+          <div class="metric-header">
+            <span class="metric-label">Source Stale Warnings</span>
+            <button class="info-tooltip-btn btn-open-methodology">ⓘ</button>
+          </div>
+          <div class="metric-value-row">
+            <span class="metric-value">1</span>
+            <span class="badge badge-stale" style="font-size: 11px;">Revision 2</span>
+          </div>
+          <div class="metric-footer">
+            <span class="metric-sub">Source text updated in revision 2</span>
+          </div>
+        </div>
+
+        <div class="metric-card" id="kpi-human-review" onclick="filterInboxByRoute('Human Review')">
+          <div class="metric-header">
+            <span class="metric-label">Human Review / Exceptions</span>
+            <button class="info-tooltip-btn btn-open-methodology">ⓘ</button>
+          </div>
+          <div class="metric-value-row">
+            <span class="metric-value">28</span>
+          </div>
+          <div class="metric-footer">
+            <span class="metric-sub">Requires verification / intake check</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity by Person Breakdown -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Activity Breakdown by Person & Role</h3>
+            <p class="card-subtitle">
+              Selected activity on 21 August 2026 in Asia/Kolkata. Distinguishes call representatives from calendar meeting organizers.
+            </p>
+          </div>
+          <div style="font-size: 12px; color: var(--text-muted);">
+            💡 Click any person to filter Conversation Inbox
+          </div>
+        </div>
+        <div id="person-activity-container">
+          <!-- Populated by JavaScript -->
+        </div>
+        <div style="margin-top: 14px; padding: 10px 14px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 12px; color: var(--text-secondary);">
+          <strong>Methodology Note:</strong> An organizer is a calendar creator, not automatically a salesperson or confirmed attendee. Telephony representatives represent outbound/inbound callers. All activity falls on 21 August 2026.
+        </div>
+      </div>
+
+      <!-- Routing Category Distribution Overview -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Current Routing Category Distribution</h3>
+            <p class="card-subtitle">
+              Multi-destination policy allows a single conversation to serve multiple purposes. Assigned route counts may exceed unique records.
+            </p>
+          </div>
+          <a href="#exports" class="btn btn-secondary btn-sm" onclick="navigateToView('exports')">Manage Routing</a>
+        </div>
+        <div id="route-distribution-overview">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VIEW 2: CONVERSATION INBOX -->
+    <div class="view-container" id="view-inbox">
+      
+      <!-- Filter Bar -->
+      <div class="filters-bar">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" id="filter-search" placeholder="Search ref, company, person, transcript keyword...">
+        </div>
+
+        <select class="select-filter" id="filter-source-type">
+          <option value="all">All Source Types</option>
+          <option value="call">Calls Only (30)</option>
+          <option value="meeting">Meetings Only (14)</option>
+        </select>
+
+        <select class="select-filter" id="filter-usable">
+          <option value="all">All Text Statuses</option>
+          <option value="usable">Usable Text Available</option>
+          <option value="missing">Missing Text (Intake)</option>
+        </select>
+
+        <select class="select-filter" id="filter-route">
+          <option value="all">All Route Categories</option>
+          <option value="Deal Next Steps">Deal Next Steps</option>
+          <option value="Customer Follow-up">Customer Follow-up</option>
+          <option value="Sales Coaching">Sales Coaching</option>
+          <option value="Partner Development">Partner Development</option>
+          <option value="Internal / Vendor Note">Internal / Vendor Note</option>
+          <option value="Human Review">Human Review</option>
+        </select>
+
+        <select class="select-filter" id="filter-review-state">
+          <option value="all">All Review States</option>
+          <option value="Reviewed">Reviewed</option>
+          <option value="Intake - Needs Usable Text">Intake - Needs Usable Text</option>
+          <option value="Pending Review - Text Changed">Pending Review - Text Changed</option>
+          <option value="Reviewed (Manual Override)">Reviewed (Manual Override)</option>
+        </select>
+
+        <select class="select-filter" id="filter-override">
+          <option value="all">All Route Policies</option>
+          <option value="automated">Automated Suggestion Only</option>
+          <option value="override">Manual Overrides Only</option>
+        </select>
+
+        <button class="btn btn-secondary btn-sm" id="btn-reset-filters">Reset Filters</button>
+      </div>
+
+      <!-- Table Header & Counter -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; font-size: 12.5px; color: var(--text-muted);">
+        <span id="inbox-filtered-count">Showing 44 of 44 records</span>
+        <span>Click any row to open conversation inspector & route editor</span>
+      </div>
+
+      <!-- Data Table -->
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Ref</th>
+              <th>Type</th>
+              <th>Person / Organiser</th>
+              <th>Contact / Subject</th>
+              <th>Time (Asia/Kolkata)</th>
+              <th>Revision</th>
+              <th>Text Status</th>
+              <th>Effective Destination(s)</th>
+              <th>Policy</th>
+              <th>Review State</th>
+            </tr>
+          </thead>
+          <tbody id="inbox-table-body">
+            <!-- Populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- VIEW 3: MANAGER BRIEF -->
+    <div class="view-container" id="view-brief">
+      <div class="card" style="max-width: 950px; margin: auto;">
+        
+        <div style="border-bottom: 2px solid var(--border-color); padding-bottom: 16px; margin-bottom: 24px;">
+          <div class="badge badge-deal-next-steps" style="margin-bottom: 8px;">Executive Briefing Document</div>
+          <h2 style="font-size: 24px; font-weight: 800; letter-spacing: -0.02em;">
+            Manager Brief — 21 August 2026 (Asia/Kolkata)
+          </h2>
+          <p style="color: var(--text-secondary); font-size: 13.5px; margin-top: 4px;">
+            Synthesized review of 44 selected interaction records (30 calls, 14 calendar meetings) across SpendNest's sales, implementation, and partnership motions. Reflects post-update delivery with all 18 usable conversation transcripts.
+          </p>
+        </div>
+
+        <!-- Section 1: Executive Overview -->
+        <div style="margin-bottom: 28px;">
+          <h3 style="font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
+            1. Daily Activity & Usable Coverage Summary
+          </h3>
+          <p style="font-size: 13.5px; line-height: 1.6; color: var(--text-primary); margin-bottom: 12px;">
+            On 21 August 2026, 44 discrete interactions were recorded: 30 telephone calls and 14 scheduled meetings. Following the receipt of delivery update-002, <strong>18 interactions have verified, usable conversation transcripts</strong> (10 calls and 8 meetings). The remaining 26 interactions intentionally contain metadata only (20 short background calls and 6 calendar records with no spoken audio or cancelled capture bots). Usable transcript coverage is <strong>40.9%</strong>.
+          </p>
+          <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 16px; font-size: 13px;">
+            <strong>Data Governance Note:</strong> Denominators strictly reflect the supplied assessment sample. Meeting organizers are calendar creators, not verified sales reps or confirmed attendees. No speculative pipeline value, win rate, or cross-person quota ranking is inferred.
+          </div>
+        </div>
+
+        <!-- Section 2: Important Conversations -->
+        <div style="margin-bottom: 28px;">
+          <h3 style="font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
+            2. High-Impact Conversations (Click Ref to Inspect)
+          </h3>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 12px;">
+            
+            <li style="border-left: 3px solid var(--teal); padding-left: 12px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="btn btn-secondary btn-sm" onclick="selectRecord('call', '20d509ba-d589-5334-9aef-ea4ce6105b1a')" style="font-weight: 800; color: var(--primary);">
+                  C03 (Call)
+                </button>
+                <strong>Milan — Developer API Access Evaluation</strong>
+                <span class="badge badge-deal-next-steps">Deal Next Steps</span>
+                <span class="badge badge-customer-follow-up">Customer Follow-up</span>
+              </div>
+              <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+                Kiran followed up on developer API access. Milan reported roaming audio difficulties and noted past budget sensitivity. Critically, Milan requested an email with subject <em>"Developer access and event notifications — follow-up"</em> and explicitly agreed to a callback on Monday or Tuesday.
+              </p>
+            </li>
+
+            <li style="border-left: 3px solid var(--amber); padding-left: 12px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="btn btn-secondary btn-sm" onclick="selectRecord('call', '428817fa-7e9e-5418-a7d4-bb396d28dfbf')" style="font-weight: 800; color: var(--amber);">
+                  C07 (Call)
+                </button>
+                <strong>Aditya / Willowbank Advisory — Channel Partnership Lead</strong>
+                <span class="badge badge-partner-development">Partner Development</span>
+                <span class="badge badge-customer-follow-up">Customer Follow-up</span>
+              </div>
+              <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+                Dev engaged Aditya regarding virtual accounts for newly incorporated overseas businesses. Aditya confirmed Willowbank regularly refers clients to digital account providers, asked for a proposal via chat app, and approved a follow-up call on Monday. This is a channel partnership opportunity, not a closed commercial deal.
+              </p>
+            </li>
+
+            <li style="border-left: 3px solid var(--purple); padding-left: 12px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="btn btn-secondary btn-sm" onclick="selectRecord('meeting', '398672e7-62dd-5afd-846d-0237d49792fb')" style="font-weight: 800; color: var(--purple);">
+                  M03 (Meeting)
+                </button>
+                <strong>Asterloom Systems — NetSuite Integration & CFO Committee Gate</strong>
+                <span class="badge badge-deal-next-steps">Deal Next Steps</span>
+                <span class="badge badge-sales-coaching">Sales Coaching</span>
+              </div>
+              <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+                Detailed product evaluation covering prepaid cards and NetSuite sync. Finance Lead Customer B explicitly established a boundary: SpendNest must send details first for internal CFO review; no further calls should be scheduled until Asterloom completes that internal evaluation.
+              </p>
+            </li>
+
+            <li style="border-left: 3px solid var(--slate); padding-left: 12px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="btn btn-secondary btn-sm" onclick="selectRecord('meeting', '4f304fff-fd40-5cfc-a366-0a134c445c2a')" style="font-weight: 800; color: var(--slate);">
+                  M07 (Meeting)
+                </button>
+                <strong>Willowfield Trust — 4 Concrete Software Defects Diagnosed</strong>
+                <span class="badge badge-customer-follow-up">Customer Follow-up</span>
+                <span class="badge badge-internal-vendor-note">Internal / Vendor Note</span>
+              </div>
+              <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+                Customer issue triage with Customer A via screen-share. Identified 4 concrete defects: description edits not persisting after save, direct document upload failing in Recreate Payment (workaround via Bill Pay Review), reimbursements stuck in Processing, and Mark as Paid retaining previous item amount. Team member A committed to follow up within 2 hours.
+              </p>
+            </li>
+
+          </ul>
+        </div>
+
+        <!-- Section 3: Evidence-Backed Follow-Up Priorities -->
+        <div style="margin-bottom: 28px;">
+          <h3 style="font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
+            3. Evidence-Backed Follow-up Action Items
+          </h3>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Target Contact / Account</th>
+                  <th>Action Supported by Evidence</th>
+                  <th>Identifiable Source Passage</th>
+                  <th>Owner</th>
+                  <th>Due Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Milan (C03)</strong></td>
+                  <td>Send pricing email with exact subject: <em>"Developer access and event notifications — follow-up"</em>; call Monday morning.</td>
+                  <td>C03 text: "Send the email and we can speak Monday or Tuesday."</td>
+                  <td>Kiran (Rep)</td>
+                  <td>Mon, 24 Aug</td>
+                </tr>
+                <tr>
+                  <td><strong>Aditya / Willowbank (C07)</strong></td>
+                  <td>Send partner program terms via chat app; schedule Monday channel discussion.</td>
+                  <td>C07 text: "send whatever proposal you have... call on Monday... Yes, that's fine."</td>
+                  <td>Dev (Rep)</td>
+                  <td>Mon, 24 Aug</td>
+                </tr>
+                <tr>
+                  <td><strong>Raghav's Colleague (C08)</strong></td>
+                  <td>Email enterprise deck to contact08@example.com mentioning Raghav's recommendation.</td>
+                  <td>C08 text: "If you send him a proposal and say you spoke with me, he can take a look."</td>
+                  <td>Meera (Rep)</td>
+                  <td>Mon, 24 Aug</td>
+                </tr>
+                <tr>
+                  <td><strong>Willowfield Trust (M07)</strong></td>
+                  <td>File 4 bug reports with engineering; notify Customer A on reimbursement release status.</td>
+                  <td>M07 Turn 27: "I will send the details to the team, get their confirmation and come back to you."</td>
+                  <td>Team member A</td>
+                  <td>Immediate (2h)</td>
+                </tr>
+                <tr>
+                  <td><strong>Asterloom Systems (M03)</strong></td>
+                  <td>Send cards proposal and NetSuite sync spec; await CFO internal deliberation without booking calls.</td>
+                  <td>M03 Turn 36: "Send the details first. We need time with the CFO and will tell you if another call is needed."</td>
+                  <td>Team member A</td>
+                  <td>Fri, 21 Aug</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Section 4: Practical Sales Coaching -->
+        <div style="margin-bottom: 28px;">
+          <h3 style="font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
+            4. Practical Sales Coaching & Boundary Management
+          </h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            
+            <div class="analysis-box">
+              <strong style="font-size: 13.5px; color: var(--purple);">Respecting Customer Disinterest (C01)</strong>
+              <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.5;">
+                In C01, Pranav explicitly stated: <em>"I didn't ask for this call, and I'm not interested... This number is for my work, not for people to sell things to me."</em> Arun attempted to continue pitching before concluding. Coaching point: immediately respect boundary, conclude politely, and mark suppression list.
+              </p>
+            </div>
+
+            <div class="analysis-box">
+              <strong style="font-size: 13.5px; color: var(--purple);">Adhering to "Do Not Call" Instructions (C10)</strong>
+              <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.5;">
+                In C10, Aniket agreed to receive a brief on chat but explicitly rejected a follow-up phone call: <em>"No. I said I will contact you if there is anything to discuss."</em> Coaching point: reps must honor prospect communication cadence; placing proactive phone calls would breach trust.
+              </p>
+            </div>
+
+            <div class="analysis-box">
+              <strong style="font-size: 13.5px; color: var(--purple);">Maintaining Referral Confidentiality (C09)</strong>
+              <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.5;">
+                In C09, Vedant suggested contacting Business Head Rishabh on LinkedIn, but strictly forbade using his name: <em>"No, please don't use my name."</em> Coaching point: reps must record this negative constraint in CRM; name-dropping Vedant would destroy credibility.
+              </p>
+            </div>
+
+            <div class="analysis-box">
+              <strong style="font-size: 13.5px; color: var(--purple);">Bypassing In-House Objections with Specificity (C06)</strong>
+              <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 4px; line-height: 1.5;">
+                In C06, Nikhil noted complete central automation across 120+ stores. Rep Ravi delivered a high-level pitch. Coaching point: when an enterprise prospect has an existing system, probe for specific edge friction (e.g. store cash receipts) rather than generic feature recitation.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Section 5: Intake & Limitations -->
+        <div style="margin-bottom: 20px;">
+          <h3 style="font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
+            5. Intake Review Queue & Dataset Limitations
+          </h3>
+          <p style="font-size: 13.5px; color: var(--text-primary); line-height: 1.6;">
+            <strong>Intake Review:</strong> 26 interactions lack usable transcripts (20 background telephony calls B01–B20 and 6 calendar records M05, M08, M11, M12, M13, M14). These are preserved with their upstream metadata and flagged for human intake verification. Substantive summaries are intentionally withheld.
+          </p>
+          <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; margin-top: 8px;">
+            <strong>Limitations:</strong> The extract represents a non-representative sample of daily operations. No CRM opportunity amounts or historical conversion benchmarks exist. Meeting organizers are calendar creators, not confirmed attendees.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VIEW 4: ROUTING GOVERNANCE & EXPORTS -->
+    <div class="view-container" id="view-exports">
+      
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Routing Governance & Export Generation</h3>
+            <p class="card-subtitle">
+              Generates physical route-organized Markdown output files, machine-readable manifest.json, manifest.csv, and downloadable ZIP archive.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-secondary btn-sm" id="btn-generate-exports">Regenerate Outputs</button>
+            <button class="btn btn-primary btn-sm" onclick="window.location.href='/api/export/zip'">Download ZIP (.zip)</button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px;">
+          <div class="analysis-box">
+            <span class="section-label">Manifest Downloads</span>
+            <div style="display: flex; gap: 10px; margin-top: 8px;">
+              <a href="/manifest.json" target="_blank" class="btn btn-secondary btn-sm">📄 manifest.json</a>
+              <a href="/manifest.csv" target="_blank" class="btn btn-secondary btn-sm">📊 manifest.csv</a>
+            </div>
+            <p style="font-size: 11.5px; color: var(--text-muted); margin-top: 8px;">
+              Every manifest path resolves to a physical file inside the export directory.
+            </p>
+          </div>
+
+          <div class="analysis-box">
+            <span class="section-label">Routing Taxonomy Governance</span>
+            <p style="font-size: 12.5px; color: var(--text-secondary); margin-top: 4px;">
+              Destinations include <em>Deal Next Steps, Customer Follow-up, Sales Coaching, Partner Development, Internal / Vendor Note</em>, and <em>Human Review</em>. Multi-routing ensures complex conversations preserve context across departments.
+            </p>
+          </div>
+        </div>
+
+        <!-- Manifest Table -->
+        <h4 style="font-size: 14px; margin-bottom: 8px;">Generated Export Manifest (Live State)</h4>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Ref</th>
+                <th>Type</th>
+                <th>Source ID</th>
+                <th>Revision</th>
+                <th>Assigned Destination(s)</th>
+                <th>Relative Output Path(s)</th>
+                <th>Policy</th>
+                <th>Review State</th>
+              </tr>
+            </thead>
+            <tbody id="manifest-table-body">
+              <!-- Populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VIEW 5: IMPORT & CONTRACT REPLAY CONSOLE -->
+    <div class="view-container" id="view-replay">
+      
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Contract Replay & Demonstration Console</h3>
+            <p class="card-subtitle">
+              Interactive test harness for verifying identity idempotency, late transcript ingestion, manual override preservation, and superseded revision rejection.
+            </p>
+          </div>
+          <button class="btn btn-outline-danger btn-sm" id="btn-reset-demo">Reset Demo (Clean)</button>
+        </div>
+
+        <!-- Contract Replay Steps Guide -->
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; margin-bottom: 24px;">
+          <h4 style="font-size: 13.5px; margin-bottom: 10px;">Contract Replay Sequence (DATA_CONTRACT.md & Screen Recording)</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+            
+            <div style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px;">
+              <div style="font-weight: 700; font-size: 12.5px; color: var(--primary); margin-bottom: 4px;">Step 1: Initial Import</div>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
+                Loads <code>01_initial.json</code> (44 unique records, 17 usable texts, M07 has no transcript).
+              </p>
+              <button class="btn btn-secondary btn-sm" id="btn-import-initial" style="width: 100%;">Import Initial Batch</button>
+            </div>
+
+            <div style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px;">
+              <div style="font-weight: 700; font-size: 12.5px; color: var(--primary); margin-bottom: 4px;">Step 2: Reordered Import</div>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
+                Imports initial batch in reverse order. Verifies 0 duplicate records created.
+              </p>
+              <button class="btn btn-secondary btn-sm" id="btn-import-reordered" style="width: 100%;">Repeat Reordered</button>
+            </div>
+
+            <div style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px;">
+              <div style="font-weight: 700; font-size: 12.5px; color: var(--primary); margin-bottom: 4px;">Step 3: Correct M07 Route</div>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
+                Sets manual route on M07 to Partner Dev + Deal Next Steps.
+              </p>
+              <button class="btn btn-secondary btn-sm" id="btn-set-m07-route" style="width: 100%;">Set M07 Manual Route</button>
+            </div>
+
+            <div style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px;">
+              <div style="font-weight: 700; font-size: 12.5px; color: var(--primary); margin-bottom: 4px;">Step 4: Import Update</div>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
+                Loads <code>02_update.json</code>. M07 receives 27 turns; manual route preserved!
+              </p>
+              <button class="btn btn-primary btn-sm" id="btn-import-update" style="width: 100%;">Import Update Batch</button>
+            </div>
+
+            <div style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px;">
+              <div style="font-weight: 700; font-size: 12.5px; color: var(--primary); margin-bottom: 4px;">Step 5: Replay Older Batch</div>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
+                Replays initial batch (rev 1). Checks that rev 1 is ignored and does not roll back M07.
+              </p>
+              <button class="btn btn-secondary btn-sm" id="btn-replay-older" style="width: 100%;">Replay Older Batch</button>
+            </div>
+
+            <div style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px;">
+              <div style="font-weight: 700; font-size: 12.5px; color: var(--teal); margin-bottom: 4px;">One-Click Final State</div>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">
+                Immediately loads complete post-update state (44 records, 18 usable texts).
+              </p>
+              <button class="btn btn-primary btn-sm" id="btn-load-demo-final" style="width: 100%; background: var(--teal);">Load Final Demo State</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Real-time Contract Status Monitor -->
+        <h4 style="font-size: 14px; margin-bottom: 10px;">Contract State Verification Monitor</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px;">
+          
+          <div class="analysis-box">
+            <span class="section-label">Unique Records (Expected: 44)</span>
+            <div style="font-size: 22px; font-weight: 800;" id="replay-stat-unique">44</div>
+            <div style="font-size: 11.5px; color: var(--text-muted);">Key: (source_type, source_id)</div>
+          </div>
+
+          <div class="analysis-box">
+            <span class="section-label">Usable Texts (17 → 18)</span>
+            <div style="font-size: 22px; font-weight: 800;" id="replay-stat-usable">18 / 44</div>
+            <div style="font-size: 11.5px; color: var(--text-muted);">Update adds 18th text</div>
+          </div>
+
+          <div class="analysis-box">
+            <span class="section-label">M07 Revision (Expected: v2)</span>
+            <div style="font-size: 22px; font-weight: 800;" id="replay-stat-m07-rev">Revision 2</div>
+            <div style="font-size: 11.5px; color: var(--text-muted);">Willowfield Trust meeting</div>
+          </div>
+
+          <div class="analysis-box">
+            <span class="section-label">M07 Manual Override Preserved?</span>
+            <div style="font-size: 18px; font-weight: 800; color: #10b981;" id="replay-stat-m07-override">Yes (Preserved)</div>
+            <div style="font-size: 11.5px; color: var(--text-muted);">Survives imports & updates</div>
+          </div>
+
+          <div class="analysis-box">
+            <span class="section-label">M07 Freshness Flag</span>
+            <div style="font-size: 15px; font-weight: 700; color: #b91c1c;" id="replay-stat-m07-freshness">Stale - Source Updated</div>
+            <div style="font-size: 11.5px; color: var(--text-muted);">Alerts manager of new text</div>
+          </div>
+
+        </div>
+
+        <!-- Live Console Log -->
+        <h4 style="font-size: 14px; margin-bottom: 8px;">Execution Audit Log</h4>
+        <div style="background-color: #0f172a; border-radius: var(--radius-md); padding: 14px; font-family: monospace; font-size: 12px; height: 180px; overflow-y: auto;" id="replay-console-log">
+          <div style="color: #64748b;">Awaiting replay commands...</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- VIEW 6: SETTINGS, FINDINGS & DATA DEFINITIONS -->
+    <div class="view-container" id="view-settings">
+      
+      <!-- Top 3 Findings -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Three Most Important Analytical Findings</h3>
+            <p class="card-subtitle">
+              Derived directly from source evidence. Separates observed facts from speculation and links to product impact.
+            </p>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          
+          <!-- Finding 1 -->
+          <div class="analysis-box" style="border-left: 4px solid var(--teal);">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <strong style="font-size: 14px; color: var(--primary);">Finding 1: Explicit Cadence & Subject Follow-up (C03 — Milan)</strong>
+              <span class="badge badge-deal-next-steps">Deal Next Steps</span>
+            </div>
+            <p style="font-size: 13px; margin: 6px 0;"><strong>What was observed:</strong> Kiran's call to Milan had severe audio interference while Milan was traveling. Milan recalled past price hesitation regarding developer API access, but explicitly agreed to follow up via email and requested a callback.</p>
+            <div class="citation-item">
+              <div class="citation-quote">"Could we do this by email? Or call on Monday a bit earlier, when I'm back indoors?... Something like 'Developer access and event notifications — follow-up'... Send the email and we can speak Monday or Tuesday."</div>
+              <div class="citation-context">Exact quote from C03 adapted call transcript</div>
+            </div>
+            <p style="font-size: 12.5px; color: var(--text-secondary);"><strong>What evidence supports:</strong> Supports an explicit email dispatch with exact subject and scheduled callback on Monday morning.</p>
+            <p style="font-size: 12.5px; color: #b45309;"><strong>What evidence DOES NOT establish:</strong> Does not establish purchase intent, deal value, or budget approval. Milan explicitly stated: "it isn't essential enough for us to spend much on it."</p>
+            <p style="font-size: 12.5px; color: var(--primary); margin-top: 4px;"><strong>Product Impact:</strong> Governs C03 routing to Deal Next Steps + Customer Follow-up; highlighted in Manager Brief Follow-up Priorities table.</p>
+          </div>
+
+          <!-- Finding 2 -->
+          <div class="analysis-box" style="border-left: 4px solid var(--amber);">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <strong style="font-size: 14px; color: var(--amber);">Finding 2: Channel Referral Signal vs Closed Deal (C07 — Aditya)</strong>
+              <span class="badge badge-partner-development">Partner Development</span>
+            </div>
+            <p style="font-size: 13px; margin: 6px 0;"><strong>What was observed:</strong> Dev pitched virtual accounts to Aditya at Willowbank Advisory for newly formed overseas entities. Aditya confirmed they regularly refer corporate clients to account providers and requested a proposal via messaging app with a Monday call.</p>
+            <div class="citation-item">
+              <div class="citation-quote">"Do you currently refer clients to providers for that part of the process? Yes, that is something we normally do... send whatever proposal you have... could I call on Monday... Yes, that's fine."</div>
+              <div class="citation-context">Exact quote from C07 adapted call transcript</div>
+            </div>
+            <p style="font-size: 12.5px; color: var(--text-secondary);"><strong>What evidence supports:</strong> Supports routing to Partner Development and dispatching commercial referral collateral on chat.</p>
+            <p style="font-size: 12.5px; color: #b45309;"><strong>What evidence DOES NOT establish:</strong> Does not establish an agreed referral agreement, agreed fee percentages, or committed client volume. Labeling this a "won deal" or pipeline revenue would be a fabricated claim.</p>
+            <p style="font-size: 12.5px; color: var(--primary); margin-top: 4px;"><strong>Product Impact:</strong> Governs C07 Partner Development destination; influences Manager Brief partner strategy; prevents false pipeline inflation.</p>
+          </div>
+
+          <!-- Finding 3 -->
+          <div class="analysis-box" style="border-left: 4px solid var(--rose);">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <strong style="font-size: 14px; color: var(--rose);">Finding 3: Explicit Customer Disinterest as Governance Signal (C01 — Pranav)</strong>
+              <span class="badge badge-sales-coaching">Sales Coaching</span>
+            </div>
+            <p style="font-size: 13px; margin: 6px 0;"><strong>What was observed:</strong> Pranav firmly rejected Arun's cold outreach, stating he did not request contact, his work mobile is not for sales calls, and his firm already has advanced internal automation.</p>
+            <div class="citation-item">
+              <div class="citation-quote">"I didn't ask for this call, and I'm not interested. This number is for my work, not for people to sell things to me... Our processes are already very automated... I don't think this is something we need."</div>
+              <div class="citation-context">Exact quote from C01 adapted call transcript</div>
+            </div>
+            <p style="font-size: 12.5px; color: var(--text-secondary);"><strong>What evidence supports:</strong> Supports immediate addition to the suppression list and coaching SDRs to respect disinterest rather than continuing outreach.</p>
+            <p style="font-size: 12.5px; color: #b45309;"><strong>What evidence DOES NOT establish:</strong> Does not establish future product demand or rep ethical violation; however, continuing calls would violate customer preference.</p>
+            <p style="font-size: 12.5px; color: var(--primary); margin-top: 4px;"><strong>Product Impact:</strong> Surfaces C01 as a Sales Coaching priority; suppresses further automated cadences; prevents harassment.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Deliberately Rejected Product Decision -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Deliberately Rejected Product Decision</h3>
+        </div>
+        <div class="analysis-box boundary-box">
+          <h4 style="font-size: 14px; color: #78350f; margin-bottom: 6px;">
+            Rejected Alternative: Enforcing a Strict "One Route Per Conversation" Constraint
+          </h4>
+          <p style="font-size: 13px; color: #78350f; line-height: 1.6; margin-bottom: 8px;">
+            <strong>Why it was considered:</strong> Traditional CRM pipelines force every activity into a single category (e.g. either "Sales Lead" OR "Customer Support") to maintain clean 1:1 reporting.
+          </p>
+          <p style="font-size: 13px; color: #78350f; line-height: 1.6; margin-bottom: 8px;">
+            <strong>Why it was rejected:</strong> Real revenue conversations routinely serve multiple organizational purposes. For example:
+            <br>• <strong>C07</strong> is both a channel partnership negotiation (Partner Development) and an active task (Customer Follow-up).
+            <br>• <strong>M07</strong> is both customer issue support (Customer Follow-up) and an urgent engineering bug report (Internal / Vendor Note).
+            <br>• <strong>M03</strong> is both an active enterprise sales deal (Deal Next Steps) and a coaching boundary on executive gatekeepers (Sales Coaching).
+            <br>Forcing a single category would destroy cross-departmental visibility and lose vital follow-up context.
+          </p>
+          <p style="font-size: 13px; color: #78350f; line-height: 1.6;">
+            <strong>Trade-off Accepted:</strong> Total assigned routing counts (e.g. 52 across 44 records) exceed the number of unique source records. To prevent confusion, the Overview dashboard and Methodology panel explicitly display the distinct denominators and explain this design choice transparently.
+          </p>
+        </div>
+      </div>
+
+      <!-- Data Dictionary & Glossary -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Data Dictionary & Business Glossary Reference</h3>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Term / Field</th>
+                <th>Standardized Meaning in SpendNest Context</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Record Identity</strong></td>
+                <td>The pair <code>(source_type, source_id)</code>. Names, array positions, and <code>record_ref</code> are reading conveniences, not keys.</td>
+              </tr>
+              <tr>
+                <td><strong>Usable Supplied Text</strong></td>
+                <td>Non-blank plain text call transcript or meeting transcript with &gt; 0 turns. 17 available in initial delivery; 18 post-update.</td>
+              </tr>
+              <tr>
+                <td><strong>Organiser vs Sales Rep</strong></td>
+                <td>Calendar organizer is the meeting creator, not proof of selling role or attendance. Telephony rep is the dialer.</td>
+              </tr>
+              <tr>
+                <td><strong>Prepaid vs Credit</strong></td>
+                <td>Prepaid cards draw from a funded company wallet; credit cards require bank underwriting and borrowing limits.</td>
+              </tr>
+              <tr>
+                <td><strong>Reconciliation</strong></td>
+                <td>Matching receipts, invoices, and accounting fields before syncing into ERP (e.g. NetSuite).</td>
+              </tr>
+              <tr>
+                <td><strong>Redacted / Adaptation</strong></td>
+                <td>Names, emails, and commercial details were transformed. Duration and historical flags remain source metadata.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Flyout Detail Drawer (Conversation Inspector & Route Editor) -->
+  <div class="detail-drawer-overlay" id="detail-drawer-overlay">
+    <div class="detail-drawer">
+      <div class="drawer-header">
+        <div class="drawer-title-row">
+          <span class="drawer-ref" id="drawer-record-ref">C01</span>
+          <span class="badge" id="drawer-source-type">CALL</span>
+          <span class="badge badge-rev1" id="drawer-revision-badge">Revision 1</span>
+        </div>
+        <button class="drawer-close-btn" onclick="closeDrawer()" title="Close Inspector">✕</button>
+      </div>
+      <div class="drawer-body" id="drawer-content">
+        <!-- Dynamically rendered by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Methodology & Denominators Modal -->
+  <div class="modal-overlay" id="methodology-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="font-size: 16px; font-weight: 700;">Dashboard Methodology & Metric Denominators</h3>
+        <button class="drawer-close-btn" id="btn-close-methodology">✕</button>
+      </div>
+      <div class="modal-body">
+        <h4>1. Total Unique Records (Denominator = 44)</h4>
+        <p>Calculated as distinct count of <code>(source_type, source_id)</code> across all applied deliveries. Re-importing batches or altering record sequence never increments this total. 30 calls + 14 meetings = 44 unique records.</p>
+
+        <h4>2. Usable Supplied Text Coverage (Denominator = 44)</h4>
+        <p>Represents records with non-empty conversation text. In initial delivery, 17 records have text (10 calls, 7 meetings; 38.6%). After delivery update-002, M07 supplies 27 turns, raising coverage to 18 (40.9%). Missing text does not mean a call never took place; it reflects extract availability.</p>
+
+        <h4>3. Missing Usable Text (Intake Queue)</h4>
+        <p>27 initially (26 post-update). These records contain metadata only. Per DATA_CONTRACT.md, substantive analysis is withheld rather than fabricated.</p>
+
+        <h4>4. Routing Counts vs Unique Records</h4>
+        <p>Because SpendNest supports multi-destination routing (e.g. a call supporting both Deal Next Steps and Customer Follow-up), the sum of route assignments exceeds 44. Each route card shows the exact number of records assigned to that specific destination.</p>
+
+        <h4>5. Timezone & Person Attribution</h4>
+        <p>All timestamps are presented in Asia/Kolkata (UTC+5:30). Telephony representatives are callers; calendar organizers are meeting creators (not confirmed salespeople or attendees).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
